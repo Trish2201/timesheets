@@ -1,0 +1,6 @@
+bs4
+webdriver-manager
+selenium
+pandas
+openpyxl==2.5.8
+streamlit
