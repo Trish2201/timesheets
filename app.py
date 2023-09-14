@@ -5,8 +5,6 @@ st.title("ICS to CSV")
 ics_file=st.file_uploader("Upload ICS file", type="ics")
 
 import csv
-import os
-import sys
 from icalendar import Calendar
 
 # Create a new CSV file
@@ -20,10 +18,14 @@ csv_writer.writerow(['Subject', 'Start Time', 'End Time', 'Description'])
 # Read the iCalendar file
 try:
     cal = Calendar.from_ical(ics_file.read())
+    print("starting")
     for event in cal.walk('VEVENT'):
-        print(event)
-        subject = event['SUMMARY']
-        start_time = event['DTSTART'].dt
+        subject = ''
+        if 'SUMMARY' in event:
+            subject = event['SUMMARY']
+        start_time = ""
+        if 'DTSTART' in event:
+            start_time = event['DTSTART'].dt
         end_time = ""
         if 'DTEND' in event:
             end_time = event['DTEND'].dt
@@ -31,7 +33,7 @@ try:
         if 'DESCRIPTION' in event:
             description = event['DESCRIPTION']
         csv_writer.writerow([subject, start_time, end_time, description])
-
+    print("done")
     # Close the CSV file
     csv_file.close()
 
